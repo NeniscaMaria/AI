@@ -1,0 +1,3 @@
+-Evolutionary Algorithm (with validation)
+-Hill climbing
+-Partical Swarm Optimization (with validation)
