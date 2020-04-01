@@ -16,6 +16,9 @@ from RunningAlgotihm import RunningAlgorithm
 from AlgorithmValidations import AlgorithmValidation
 from PSO import PSO
 from PSOValidation import PSOValidation
+from ACO import ACO
+from ControllerACO import Controller
+from Ant import Ant
 
 class UI (Ui_MainWindow):
     def __init__(self):
@@ -242,6 +245,7 @@ class UI (Ui_MainWindow):
             self.__showMessage("Invalid input. Please try again.")
         except TypeError as te:
             self.__showMessage(te)
+    
         
     def run(self):
         self.__mainWindow.show()
