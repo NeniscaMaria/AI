@@ -38,16 +38,18 @@ class Controller:
         fitness = min(fitness)
         return self.__population[fitness[1]]
     
+    
     def run(self):
         solution=None
         bestAnt = None
         for i in range(self.__noEpoch):
-            print(i,"/",self.__noEpoch)
+            print(self.__problem.getSize(),self.__noAnts)
+            print("Iteration ",i,"/",self.__noEpoch)
             solution = self.iteration()
             if bestAnt == None:
                 bestAnt = solution
             if solution.evaluate()<bestAnt.evaluate():
                 bestAnt = solution
-        return solution
+        return [solution,solution.evaluate()]
         
         
