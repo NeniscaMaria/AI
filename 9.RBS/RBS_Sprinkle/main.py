@@ -39,7 +39,7 @@ class UI:
         return lambda x: x*(b - a) + a
     
     def inverse_tri(self,a, b, c):
-        return lambda x: (self.inverseLine(a, b)*x + self.inverseLine(c, b)*x)/2
+        return lambda x: (self.inverseLine(a, b)(x) + self.inverseLine(c, b)(x))/2
     
     def __initializeTime(self):
         time = FuzzyDescriptions()
@@ -66,6 +66,7 @@ class UI:
         
     def __readInput(self):
         inputData={}
+        print("Input:")
         try:
             with open(self.__inputFile,'r') as f:
                 lines = f.readlines()
@@ -74,6 +75,7 @@ class UI:
                         words = line.strip().split(",")
                         if(words[-1]==''):
                             words.remove('')
+                        print(words)
                         inputData[int(words[0])] = int(words[1])
         except FileNotFoundError :
             print("Inexistent file : "+self.__inputFile)
@@ -83,6 +85,8 @@ class UI:
         ctrl = Controller(self.__temperature, self.__humidity, self.__time, self.__rules)
         #read input data from file
         inputData = self.__readInput()
+        print()
+        print("Output:")
         for key in inputData.keys():
             print(ctrl.compute({'humidity':key, 'temperature':inputData[key]}))
         

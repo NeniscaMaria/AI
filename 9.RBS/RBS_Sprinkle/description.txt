@@ -118,7 +118,6 @@ ushort(t) = min(unormal(65),ucold(17)) = min(0.7,0) = 0
 ***Rule 5: humidity = normal, temperature = cold => time = medium
 unormal(65) = 0.7
 ucold(17) = 0
-
 umedium(t) = 0
 -------------------------------------------------------------------
 ***Rule 6: humidity = normal, temperature = normal => time = medium
@@ -130,13 +129,11 @@ umedium(t) = 0.6
 ***Rule 7: humidity = normal, temperature = warm => time = medium
 unormal(65) = 0.7
 uwarm(17) = 0.4
-
 umedium(t) = 0.4
 ------------------------------------------------------------------
 ***Rule 8: humidity = normal, temperature = hot => time = long
 unormal(65) = 0.7
 uhot(17) = 0
-
 ulong(t) = 0
 ------------------------------------------------------------------
 ***Rule 9: humidity = dry, temperature = very cold => time = medium
@@ -146,9 +143,7 @@ therefore, u(x) has the shape max{0,min{x-a/b-a,1,c-x/c-b}} with a=-1000, b=0 an
 
 udry(65) = max{0,min{1.065,1,-0.3}}
 udry(65) = 0
-
 uveryCold(17) = 0
-
 umedium(t) = 0
 ------------------------------------------------------------------
 ***Rule 10: humidity = dry, temperature = cold => time = long

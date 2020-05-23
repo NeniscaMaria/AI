@@ -25,6 +25,8 @@ class FuzzySystem:
         for var in fuzzyOutputVariables:
             sumW += var[1]
             weightedTotal += self.outputDescription.defuzzify(*var) * var[1]
+        if sumW == 0:
+            return 0
         return weightedTotal / sumW
 
     def _computeDescriptions(self, inputs):
