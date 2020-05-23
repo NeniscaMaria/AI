@@ -1,0 +1,15 @@
+wet,very cold,short
+wet,cold,short
+wet,normal,short
+wet,warm,short
+wet,hot,medium
+normal,very cold,short
+normal,cold,medium
+normal,normal,medium
+normal,warm,medium
+normal,hot,long
+dry,very cold,medium
+dry,cold,long
+dry,normal,long
+dry,warm,long
+dry,hot,long

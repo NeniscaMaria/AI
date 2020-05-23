@@ -1,0 +1,184 @@
+Consider a system to control a sprinkler. 
+The purpose of this system is to adjust the operating
+time of the sprinkler (short, medium, long). 
+The outside sensors give information about the air
+temperature (very cold, cold, normal, warm, hot) and the humidity of the soil (dry, normal, wet). 
+Compute the necessary operating time of the sprinkler according to the input data.
+
+TABLE 1
+
+humidity/temeprature | very cold | cold | normal | warm | hot
+-----------------------------------------------------------------
+       wet           |   short   |short | short  | short| medium
+-----------------------------------------------------------------
+      normal         |   short   |medium| medium |medium| long
+-----------------------------------------------------------------
+        dry          |   medium  | long |  long  | long | long
+-----------------------------------------------------------------
+
+Model used: Sugeno
+
+Inference: humidity h = 65 and temperature t = 17 then time = ?
+
+We apply each rule from the table one by one:
+
+------------------------------------------------------------------
+***Rule 1: humidity = wet, temperature = very cold => time = short
+Compute the membership of h=65 to the wet fuzzy set. The wet fuzzy set has a triangular shape,
+therefore u(x) has the shape max{0,min{x-a/b-a,1,c-x/c-b}} with a=50, b=100, c=1000
+=> uwet(x) = max{0, min{x-50/50,1,1000-x/900}}
+
+uwet(65) = max{0, min{65-50/50,1,1000-50/900}} = max{0, min{15/50,1,950/900}} 
+         = max{0, min{0.3,1,1.05}} = max{0,0.3} = 0.3
+uwet(65) = 0.3
+
+Compute the membership of t=17 to the very cold fuzzy set. The very cold fuzzy set has a trapeizodal
+shape, therefore u(x) has the shape max{0, min{(x - a) / (b - a), 1, (d - x) / (d - c)}}
+with a=-1000, b = -30, c = -20 and d = 5
+=> uveryCold(x) = max{0, min{x+1000/970, 1 , 5-x/25}}
+
+uveryCold(17) = max{0, min{1.04, 1, -0.48}} = max{0,-0.48}
+uveryCold(17) = 0
+
+Apply conjunction:
+ushort(t) = min(uwet(65),uveryCold(17)) = min(0.3,0) = 0
+------------------------------------------------------------------
+***Rule 2: humidity = wet, temperature = cold => time = short
+Compute the membership of h=65 to the wet fuzzy set. From rule 1 =>
+=> uwet(65) = 0.3
+
+Compute the membership of t=17 to the cold fuzzy set. the cold fuzzy set has a triangular shape,
+therefore u(x) has the shape max{0,min{x-a/b-a,1,c-x/c-b}} with a=-5, b=0 and c=10
+=> ucold(x) = max{0,min{x+5/5,1,10-x/15}}
+
+ucold(17) = max{0, min{4.4, 1, -0.46}}
+ucold(17) = 0
+
+Apply conjunction:
+ushort(t) = min(uwet(65),ucold(17)) = min(0.3,0) = 0
+------------------------------------------------------------------
+***Rule 3: humidity = wet, temperature = normal => time = short
+Compute the membership of h=65 to the wet fuzzy set. From rule 1 =>
+=> uwet(65) = 0.3
+
+Compute the membership of t=17 to the normalTemp fuzzy set. The normal fuzzy se has a trapeizodal
+shape, therefore u(x) has the shape max{0, min{(x - a) / (b - a), 1, (d - x) / (d - c)}}
+with a=5, b = 10, c = 15 and d = 20
+=>unormalT(x) = max{0, min{(x - 5) / 5, 1, (20 - x) / 5}}
+
+unormalT(17) = max{0, min{2.4,1,0.6}}
+unormalT(17) = 0.6
+
+Apply conjunction:
+ushort(t) = min(uwet(65),unormalT(17)) = min(0.3,0.6) = 0.3
+------------------------------------------------------------------
+***Rule 3: humidity = wet, temperature = warm => time = short
+Compute the membership of h=65 to the wet fuzzy set. From rule 1 =>
+=> uwet(65) = 0.3
+
+Compute the membership of t=17 to the warm fuzzy set. The warm fuzzy shape has a triangular shape,
+therefore u(x) has the shape max{0,min{x-a/b-a,1,c-x/c-b}} with a=15, b=20 and c=25
+=>uwarm(x) = max{0,min{x-15/5,1,25-x/5}}
+
+uwarm(17) = max{0, min{0.4,1,1.6}}
+uwarm(17) = 0.4
+
+Apply conjunction:
+ushort(t) = min(uwet(65),uwarm(17)) = min(0.3,0.4) = 0.3
+------------------------------------------------------------------
+***Rule 4: humidity = wet, temperature = hot => time = medium
+Compute the membership of h=65 to the wet fuzzy set. From rule 1 =>
+=> uwet(65) = 0.3
+
+Compute the membership of t=17 to the hot fuzzy set. The hot fuzzy shape has a trapeizodal 
+shape, therefore u(x) has the shape max{0, min{(x - a) / (b - a), 1, (d - x) / (d - c)}}
+with a=25, b = 30, c = 35 and d = 1000
+=>uhot(x) = max{0, min{(x - 25) / 5, 1, (1000 - x) / 965}}
+
+uhot(17) = max{0,min{-1.6,1,1.01}}
+uhot(17) = 0
+
+Apply conjunction:
+ushort(t) = min(uwet(65),uhot(17)) = min(0.3,0) = 0
+---------------------------------------------------------------------
+***Rule 5: humidity = normal, temperature = very cold => time = short
+Compute the membership of h=65 to the normal fuzzy set. The normal fuzzy has a triangular shape,
+therefore, u(x) has the shape max{0,min{x-a/b-a,1,c-x/c-b}} with a=0, b=50 and c=100
+=>unormal(x) = max{0,min{x/50,1,100-x/50}}
+
+unormal(65) = max{0,min{1.3,1,0.7}}
+unormal(65) = 0.7
+
+Compute the membership of t=17 to the very cold fuzzy set. From rule 1=>
+uveryCold(17) = 0
+
+Apply conjunction:
+ushort(t) = min(unormal(65),ucold(17)) = min(0.7,0) = 0
+-----------------------------------------------------------------
+***Rule 5: humidity = normal, temperature = cold => time = medium
+unormal(65) = 0.7
+ucold(17) = 0
+
+umedium(t) = 0
+-------------------------------------------------------------------
+***Rule 6: humidity = normal, temperature = normal => time = medium
+unormal(65) = 0.7
+unormalT(17) = 0.6
+
+umedium(t) = 0.6
+------------------------------------------------------------------
+***Rule 7: humidity = normal, temperature = warm => time = medium
+unormal(65) = 0.7
+uwarm(17) = 0.4
+
+umedium(t) = 0.4
+------------------------------------------------------------------
+***Rule 8: humidity = normal, temperature = hot => time = long
+unormal(65) = 0.7
+uhot(17) = 0
+
+ulong(t) = 0
+------------------------------------------------------------------
+***Rule 9: humidity = dry, temperature = very cold => time = medium
+Compute the membership of h=65 to the dry fuzzy set. The dry fuzzy has a triangular shape,
+therefore, u(x) has the shape max{0,min{x-a/b-a,1,c-x/c-b}} with a=-1000, b=0 and c=50
+=>udry(x) = max{0,min{x+1000/1000,1,50-x/50}}
+
+udry(65) = max{0,min{1.065,1,-0.3}}
+udry(65) = 0
+
+uveryCold(17) = 0
+
+umedium(t) = 0
+------------------------------------------------------------------
+***Rule 10: humidity = dry, temperature = cold => time = long
+udry(65)=0
+ucold(17) = 0
+ulong(t) = 0
+------------------------------------------------------------------
+***Rule 11: humidity = dry, temperature = normal => time = long
+udry(65) = 0
+unormalT(17) = 0.6
+ulong(t) = 0
+------------------------------------------------------------------
+***Rule 12: humidity = dry, temperature = warm => time = long
+udry(65) = 0
+uwarm(17) = 0.4
+ulong(t) = 0
+------------------------------------------------------------------
+***Rule 13: humidity = dry, temperature = hot => time = long
+udry(65) = 0
+uhot(17) = 0
+ulong(t) = 0
+
+
+Inverse functions for time:
+short: f(x) = -50*x+50
+medium: h(x) = (50*x + (-50*x+100))/2
+long: g(x) = 50*x + 50
+
+COA = [0.3*f(0.3)*2 + 0.6*h(0.6) + 0.4*h(0.4)]/(0.6+0.4+0.3+0.3)
+COA = (21 + 30 + 20)/1.6
+COA = 44.375
+
+Result: the estimated time is 44.375
